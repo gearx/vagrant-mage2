@@ -27,7 +27,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "mage2" do |mage2|
   end
-  
+
+  # config.vm.provision "file",   source: "xdebug.ini", destination: "~/xdebug.ini"
+  config.vm.provision "file",   source: "mysqld.cnf", destination: "~/mysqld.cnf"
   config.vm.provision "install",  type: "shell",  path: "vagrant/install.sh"
   config.vm.provision "config",   type: "shell",  path: "vagrant/config.sh"
 

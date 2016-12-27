@@ -16,30 +16,18 @@ ln -fs /etc/php/7.0     conf/php7
 sudo ln -fs /usr/lib/php/20151012    /etc/php/7.0/extension
 chown -R vagrant:vagrant .
 
-cd /var/www
-chown -R vagrant:vagrant .
-
-
-echo "Replacing MySQL config file (my.cnf) ..."
-# ---------------------------
-# [ ! -f /etc/mysql/original-my.cnf ] && mv /etc/mysql/my.cnf /etc/mysql/original-my.cnf
-# mv /home/vagrant/my.cnf /etc/mysql/my.cnf
+# cd /var/www
+# chown -R vagrant:vagrant .
 
 
 echo  "Creating Custom PHP ini for overrides ..."
 # ---------------------------
-# touch /etc/php/5.5/php-custom.ini /etc/php/5.6/php-custom.ini /etc/php/7.0/php-custom.ini
-# ln -fs /etc/php/5.5/php-custom.ini /etc/php/5.5/cli/conf.d/01-php-custom.ini
-# ln -fs /etc/php/5.5/php-custom.ini /etc/php/5.5/apache2/conf.d/01-php-custom.ini
-# ln -fs /etc/php/5.6/php-custom.ini /etc/php/5.6/cli/conf.d/01-php-custom.ini
-# ln -fs /etc/php/5.6/php-custom.ini /etc/php/5.6/apache2/conf.d/01-php-custom.ini
-# ln -fs /etc/php/7.0/php-custom.ini /etc/php/7.0/cli/conf.d/01-php-custom.ini
-# ln -fs /etc/php/7.0/php-custom.ini /etc/php/7.0/apache2/conf.d/01-php-custom.ini
+touch /etc/php/7.0/php-custom.ini
+ln -fs /etc/php/7.0/php-custom.ini /etc/php/7.0/cli/conf.d/01-php-custom.ini
+ln -fs /etc/php/7.0/php-custom.ini /etc/php/7.0/apache2/conf.d/01-php-custom.ini
 
 echo  "Configuring xDebug ..."
 # ---------------------------
-# cp /home/vagrant/xdebug.ini /etc/php/5.5/mods-available/xdebug.ini
-# cp /home/vagrant/xdebug.ini /etc/php/5.6/mods-available/xdebug.ini
 # cp /home/vagrant/xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
 # rm /home/vagrant/xdebug.ini
 
@@ -82,9 +70,14 @@ rm -f /var/www/html/index.html
 service apache2 restart
 
 
-echo "Restarting MySQL service ..."
+echo "Replacing MySQL config file (mysqld.cnf) ..."
 # ---------------------------
-# rm -f /var/lib/mysql/ib_logfile0 /var/lib/mysql/ib_logfile1
-# service mysql restart
+[ ! -f /etc/mysql/original-my.cnf ] && mv /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld-original.cnf
+mv /home/vagrant/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+
+# Remove ib_logfiles since size has changed
+rm -f /var/lib/mysql/ib_logfile0 /var/lib/mysql/ib_logfile1
+
+service mysql restart
 
 
