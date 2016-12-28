@@ -57,6 +57,26 @@ Listen 8080
     AllowOverride All
   </Directory>
 </VirtualHost>
+<VirtualHost *:80>
+  DocumentRoot "/home/vagrant/mage"
+  ServerName mage2.local
+  <Directory "/home/vagrant/mage">
+    AllowOverride All
+  </Directory>
+</VirtualHost>
+<VirtualHost *:443>
+  DocumentRoot "/home/vagrant/mage"
+  ServerName mage2.local
+  <Directory "/home/vagrant/mage">
+    AllowOverride All
+  </Directory>
+</VirtualHost>
+
+<Directory "/home/vagrant">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
 EOF
 )
 
@@ -79,5 +99,6 @@ mv /home/vagrant/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 rm -f /var/lib/mysql/ib_logfile0 /var/lib/mysql/ib_logfile1
 
 service mysql restart
+
 
 
