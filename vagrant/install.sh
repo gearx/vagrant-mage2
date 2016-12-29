@@ -70,5 +70,26 @@ rm composer-setup.php
 exit $RESULT
 
 
+echo "Installing RVM ..."
+# Switch to vagrant user session so rvm is installed properly, then exit after
+# --------------------
+apt-get -y remove ruby
+curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+curl -sSL get.rvm.io | bash -s stable --ignore-dotfiles
+source /usr/local/rvm/scripts/rvm
+usermod -a -G rvm vagrant
+
+echo "Installing Ruby 2.3 ..."
+# --------------------
+su - vagrant -c "rvm --quiet-curl install 2.3"
+su - vagrant -c "gem update -q --system"
+
+
+echo "Installing Node JS 6"
+# --------------------
+apt-get install -y python-software-properties
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+apt-get install -y nodejs
+
 
 
