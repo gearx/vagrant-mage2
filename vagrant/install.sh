@@ -39,15 +39,15 @@ apt-get install -y -q mysql-server mysql-client
 
 
 # Grant Priveledges for direct connection from host
-# GRANT=$(cat <<EOF
-# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'
-#     IDENTIFIED BY 'mysql'
-#     WITH GRANT OPTION;
-# FLUSH PRIVILEGES;
-# EOF
-# )
+GRANT=$(cat <<EOF
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'
+    IDENTIFIED BY 'mysql'
+    WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF
+)
 
-# mysql -uroot -pmysql -e "$GRANT"
+mysql -uroot -pmysql -e "$GRANT"
 # GRANT ALL ON *.* to root@'192.168.50.1' IDENTIFIED BY 'mysql';
 
 
@@ -67,7 +67,6 @@ fi
 php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer
 RESULT=$?
 rm composer-setup.php
-exit $RESULT
 
 
 echo "Installing RVM ..."
@@ -85,7 +84,7 @@ su - vagrant -c "rvm --quiet-curl install 2.3"
 su - vagrant -c "gem update -q --system"
 
 
-echo "Installing Node JS 6"
+echo "Installing Node JS 6 ..."
 # --------------------
 apt-get install -y python-software-properties
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
